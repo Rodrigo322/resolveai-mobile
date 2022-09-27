@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="#" alt="App ResolveAí"> ResolveAí </a>
+    <a href="#" alt="App mobile ResolveAi> ResolveAi </a>
 </h1>
 
 <h3 align="center">
@@ -7,35 +7,43 @@
 </h3>
 
 <h4 align="center">
-	🚧   Em andamento 🚀 🚧
+	🚧   Em andamento  🚧
 </h4>
 
 ## 💻 Sobre o projeto
 
-O app ResolveAí tem por finalidade unir cidadãos comuns e seus governantes com o único propósito de transformar a cidade em um local mais agradável de se viver.
+ResolveAi - é uma forma incentivar cidadãs e governantes a torna o local em que vivem mais agradável
 
 ---
 
 ## ⚙️ Funcionalidades
 
-- [] Usuário poderá se cadastrar na plataforma com seus dados.
-
-  - [] Usuário regista o problema que deseja reportar para entidade.
-  - [] Usuário poderá registrar um problema de forma anônima.
-  - [] Usuário pode listar todos os problemas que já foram cadastrados.
-  - [] Qualquer usuário poderá visualizar os problemas que foram resolvidos.
-  - [] Qualquer Usuário pode visualizar problemas ainda não foram resolvidos.
-  - [] Usuário poderá dar feedback sobre o problema que foi resolvido.
-
-- [] A entidade deve gerar um TOKEN de acesso a API.
-
-  - [] A entidade poderá visualizar todos os problemas enviados pra ela.
-  - [] A entidade poderá marcar como finalizado o problema.
-  - [] A entidade poderá enviar maiores informações sobre o problema.
+- [ ] O usuário pode se cadastrar com seus dados
+- [ ] O usuário pode fazer solitações para resoluções de problemas
+- [ ] O usuário pode visualizar a todas as solitações cadastradas
 
 ---
 
+### Mobile
+
+<p align="center">
+  <!-- <img alt="app mobile" title="DevFavorite" src="./assets/1.jpeg" width="200px">
+  <img alt="app mobile" title="DevFavorite" src="./assets/2.jpeg" width="200px">
+  <img alt="app mobile" title="DevFavorite" src="./assets/3.jpeg" width="200px">
+  <img alt="app mobile" title="DevFavorite" src="./assets/4.jpeg" width="200px">
+  <img alt="app mobile" title="DevFavorite" src="./assets/5.jpeg" width="200px"> -->
+</p>
+---
+
 ## 🚀 Como executar o projeto
+
+Este projeto é divido em duas partes:
+
+1. [Backend](https://github.com/Rodrigo322/resolveai)
+2. Mobile
+
+💡Para o app mobile funcione perfeitamente e necessário que o backend já esteja
+executando
 
 ### Pré-requisitos
 
@@ -43,23 +51,21 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/).
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
 
-#### 🎲 Rodando o Backend (servidor)
+#### 🧭 Rodando a aplicação mobile (Frontend)
 
 ```bash
 
 # Clone este repositório
-$ git clone https://github.com/Rodrigo322/resolveai.git
+$ git clone https://github.com/Rodrigo322/resolveai-mobile.git
 
-# Vá para a pasta backend
-$ cd backend
+# Vá para a pasta da aplicação Front End
+$ cd resolveai-mobile
 
 # Instale as dependências
-$ npm install
+$ npm install ou yarn
 
 # Execute a aplicação em modo de desenvolvimento
-$ npm run dev
-
-# O servidor inciará na porta:3333 - acesse http://localhost:3333
+$ expo start
 
 ```
 
@@ -67,13 +73,12 @@ $ npm run dev
 
 ## 🛠 Tecnologias
 
-As seguintes ferramentas foram usadas na construção do projeto:
+#### [](https://github.com/Rodrigo322/DevFavorite)**Mobile** ([React Native](http://www.reactnative.com/) + [TypeScript](https://www.typescriptlang.org/))
 
-#### [](https://github.com/Rodrigo322/resolveai.git)**Backend** ([NodeJS](https://nodejs.org/en/))
-
-- **[Express](https://expressjs.com/)**
-- **[Prisma](https://www.prisma.io)**
-- **[Typescript](https://www.typescriptlang.org/)**
+- **[Expo](https://expo.io/)**
+- **[NativeBase](https://nativebase.io/)**
+- **[React Navigation](https://reactnavigation.org/)**
+- **[Axios](https://github.com/axios/axios)**
 
 ## 📝 Licença
 

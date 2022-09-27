@@ -14,15 +14,15 @@ import {
   Hourglass,
 } from "phosphor-react-native";
 
-export type OrderProps = {
+export type ProblemProps = {
   id: string;
   title: string;
-  when: string;
+  description: string;
   status: "open" | "closed";
 };
 
 type Props = IPressableProps & {
-  data: OrderProps;
+  data: ProblemProps;
 };
 export function Problem({ data, ...rest }: Props) {
   const { colors } = useTheme();
@@ -42,13 +42,13 @@ export function Problem({ data, ...rest }: Props) {
         <Box bg={statusColor} h="full" w={2} />
         <VStack flex={1} my={5} ml={5}>
           <Text color="white" fontSize="md">
-            Título
+            {data.title}
           </Text>
 
           <HStack alignItems="center">
             <ClockAfternoon size={15} color={colors.gray[300]} />
             <Text color="gray.200" fontSize="xs" ml={1}>
-              "21/05/2022"
+              {data.description}
             </Text>
           </HStack>
         </VStack>
