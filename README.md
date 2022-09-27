@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-   ResolveAi
+   Status do Projeto
 </h3>
 
 <h4 align="center">
