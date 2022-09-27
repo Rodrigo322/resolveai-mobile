@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="#" alt="App mobile ResolveAi"> ResolveAi </a>
+    <a href="#" alt="App mobile ResolveAí"> ResolveAí </a>
 </h1>
 
 <h3 align="center">
@@ -27,11 +27,9 @@ Com o app ResolveAí pessoas podem ajudar a prefeitura local identificar problem
 ### Mobile
 
 <p align="center">
-  <!-- <img alt="app mobile" title="DevFavorite" src="./assets/1.jpeg" width="200px">
-  <img alt="app mobile" title="DevFavorite" src="./assets/2.jpeg" width="200px">
-  <img alt="app mobile" title="DevFavorite" src="./assets/3.jpeg" width="200px">
-  <img alt="app mobile" title="DevFavorite" src="./assets/4.jpeg" width="200px">
-  <img alt="app mobile" title="DevFavorite" src="./assets/5.jpeg" width="200px"> -->
+  <img alt="app mobile" title="ResolveAí" src="./assets/2.jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/1.jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/3.jpeg" width="200px">
 </p>
 ---
 
