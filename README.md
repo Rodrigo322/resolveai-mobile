@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="#" alt="App mobile ResolveAi> ResolveAi </a>
+    <a href="#" alt="App mobile ResolveAi"> ResolveAi </a>
 </h1>
 
 <h3 align="center">
