@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-    Com o app ResolveAí pessoas podem ajudar a prefeitura local identificar problemas na cidade.
+   ResolveAi
 </h3>
 
 <h4 align="center">
@@ -12,7 +12,7 @@
 
 ## 💻 Sobre o projeto
 
-ResolveAi - é uma forma incentivar cidadãs e governantes a torna o local em que vivem mais agradável
+Com o app ResolveAí pessoas podem ajudar a prefeitura local identificar problemas na cidade.
 
 ---
 
