@@ -4,6 +4,10 @@ export declare global {
       signIn: undefined;
       signOut: undefined;
       home: undefined;
+      details: { problemId: string };
+      register: { position: {} };
+      profile_user: undefined;
+      select_map_position: undefined;
     }
   }
 }

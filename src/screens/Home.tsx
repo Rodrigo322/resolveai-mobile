@@ -1,34 +1,54 @@
+import { useNavigation } from "@react-navigation/native";
 import {
+  Button as ButtonNativeBase,
   Center,
   FlatList,
   Heading,
   HStack,
-  IconButton,
+  Image,
   Text,
   useTheme,
   VStack,
 } from "native-base";
-import { ChatCenteredText, SignOut } from "phosphor-react-native";
+import { ChatCenteredText } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 
 import Logo from "../assets/logo_secondary.svg";
+import { Button } from "../components/Button";
 
 import { Filter } from "../components/Filter";
+import { Loading } from "../components/Loading";
 import { Problem, ProblemProps } from "../components/Problem";
 
 import { api } from "../services/api";
 
 export function Home() {
+  const [loading, setLoading] = useState(true);
   const [statusSelected, setStatusSelected] = useState<"open" | "closed">(
     "open"
   );
   const [problems, setProblems] = useState<ProblemProps[]>([]);
+
+  const navigation = useNavigation();
   const { colors } = useTheme();
 
+  const handleOpenDetails = (problemId: string) => {
+    navigation.navigate("details", { problemId });
+  };
+
+  const handleNewProblem = () => {
+    navigation.navigate("select_map_position");
+  };
+
+  const handleUserProfile = () => {
+    return navigation.navigate("profile_user");
+  };
+
   useEffect(() => {
-    api.get<ProblemProps[]>("/problems").then((response) => {
-      const data = response.data.map((item) => item);
-      setProblems(data);
+    setLoading(true);
+    api.get<ProblemProps[]>(`/problems/${statusSelected}`).then((response) => {
+      setProblems(response.data);
+      setLoading(false);
     });
   }, [statusSelected]);
 
@@ -44,7 +64,16 @@ export function Home() {
         px={6}
       >
         <Logo />
-        <IconButton icon={<SignOut size={26} color={colors.gray[300]} />} />
+        <ButtonNativeBase onPress={handleUserProfile} variant="unstyled">
+          <Image
+            size={10}
+            borderRadius={100}
+            source={{
+              uri: "https://avatars.githubusercontent.com/u/59943388?v=4",
+            }}
+            alt="Alternate Text"
+          />
+        </ButtonNativeBase>
       </HStack>
       <VStack flex={1} px={6}>
         <HStack
@@ -55,7 +84,7 @@ export function Home() {
           alignItems="center"
         >
           <Heading color="gray.100">Minhas Solicitações</Heading>
-          <Text color="gray.200">3</Text>
+          <Text color="gray.200">{problems.length}</Text>
         </HStack>
         <HStack space={3} mb={8}>
           <Filter
@@ -71,26 +100,32 @@ export function Home() {
             isActive={statusSelected === "closed"}
           />
         </HStack>
-
-        <FlatList
-          data={problems}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Problem data={item} />}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 100,
-          }}
-          ListEmptyComponent={() => (
-            <Center>
-              <ChatCenteredText color={colors.gray[300]} size={40} />
-              <Text color="gray.300" fontSize="xl" mt={6} textAlign="center">
-                Você ainda não possui {"\n"}
-                solicitações{" "}
-                {statusSelected === "open" ? "em andamento" : "finalizadas"}
-              </Text>
-            </Center>
-          )}
-        />
+        {loading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={problems}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Problem data={item} onPress={() => handleOpenDetails(item.id)} />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 100,
+            }}
+            ListEmptyComponent={() => (
+              <Center>
+                <ChatCenteredText color={colors.gray[300]} size={40} />
+                <Text color="gray.300" fontSize="xl" mt={6} textAlign="center">
+                  Você ainda não possui {"\n"}
+                  solicitações{" "}
+                  {statusSelected === "open" ? "em andamento" : "finalizadas"}
+                </Text>
+              </Center>
+            )}
+          />
+        )}
+        <Button onPress={handleNewProblem} title="Nova solicitação" />
       </VStack>
     </VStack>
   );
