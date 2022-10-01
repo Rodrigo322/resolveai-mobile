@@ -1,9 +1,10 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { useTheme, VStack } from "native-base";
 import { Plus } from "phosphor-react-native";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -16,6 +17,7 @@ import {
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { Input } from "../components/Input";
+import { AuthContext } from "../contexts/auth";
 import { api } from "../services/api";
 
 type RouteParamsLocation = {
@@ -30,8 +32,19 @@ export function RegisterProblem() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
+  const { user } = useContext(AuthContext);
   const route = useRoute();
   const { latitude, longitude } = route.params as RouteParamsLocation;
+
+  useEffect(() => {
+    const loadingStoreData = async () => {
+      const storageLatitude = await AsyncStorage.getItem("@storage:latitude");
+      const storageLongitude = await AsyncStorage.getItem("@storage:longitude");
+
+      console.log(storageLatitude, storageLongitude);
+    };
+    loadingStoreData();
+  }, []);
 
   const { colors } = useTheme();
 
@@ -57,30 +70,39 @@ export function RegisterProblem() {
     setPhotos([...photos, photo]);
   }
 
-  function handleCreateNewProblem() {
-    setIsLoading(true);
-    const data = {
-      title,
-      description,
-      latitude,
-      longitude,
-      status: "open",
-      photos,
-    };
-    api
-      .post("problem", data)
-      .then((response) => {
-        console.log(response.data);
-        navigation.navigate("home");
-        return Alert.alert("Cadastro", "Solicitação feita com sucesso!");
-      })
-      .catch((err) => {
-        console.log(err);
-        return Alert.alert("Cadastro", "Ops! algo deu errado.");
-      })
-      .finally(() => {
-        setIsLoading(false);
+  async function handleCreateNewProblem() {
+    try {
+      setIsLoading(true);
+
+      const storageLatitude = await AsyncStorage.getItem("@storage:latitude");
+      const storageLongitude = await AsyncStorage.getItem("@storage:longitude");
+
+      const data = new FormData();
+
+      data.append("title", title);
+      data.append("description", description);
+      data.append("latitude", storageLatitude);
+      data.append("longitude", storageLongitude);
+      data.append("status", "open");
+
+      photos.forEach((photo) => {
+        data.append("Image", {
+          uri: photo,
+        } as any);
       });
+
+      await api.post(`/problem/user/${user.id}`, data);
+
+      navigation.navigate("home");
+
+      console.log(data);
+
+      Alert.alert("Cadastro", "Solicitação feita com sucesso!");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("error", error);
+    }
   }
 
   return (

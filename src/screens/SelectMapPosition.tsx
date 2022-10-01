@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Icon, useTheme, VStack } from "native-base";
 import { ArrowRight } from "phosphor-react-native";
@@ -9,18 +10,32 @@ import mapMarker from "../assets/map.png";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 
+type PositionType = {
+  latitude: number;
+  longitude: number;
+};
+
 export function SelectMapPosition() {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const { colors } = useTheme();
 
   const navigation = useNavigation();
 
+  console.log(position);
+
   function handleNextStep() {
     navigation.navigate("register", { position });
   }
 
-  function handleSelectMapPosition(event: MapEvent) {
-    setPosition(event.nativeEvent.coordinate);
+  async function handleSelectMapPosition(event: MapEvent) {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setPosition({ latitude, longitude });
+
+    const latitudeConvertToString = JSON.stringify(latitude);
+    const longitudeConvertToString = JSON.stringify(longitude);
+
+    await AsyncStorage.setItem("@storage:latitude", latitudeConvertToString);
+    await AsyncStorage.setItem("@storage:longitude", longitudeConvertToString);
   }
 
   return (
@@ -39,7 +54,7 @@ export function SelectMapPosition() {
         }}
         onPress={handleSelectMapPosition}
       >
-        {position.latitude !== 0 && (
+        {!!position.latitude && (
           <Marker
             icon={mapMarker}
             coordinate={{
@@ -50,7 +65,7 @@ export function SelectMapPosition() {
         )}
       </MapView>
 
-      {position.latitude !== 0 && (
+      {!!position.latitude && (
         <Button
           onPress={handleNextStep}
           bg="green.500"

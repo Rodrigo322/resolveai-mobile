@@ -5,7 +5,7 @@ export declare global {
       signOut: undefined;
       home: undefined;
       details: { problemId: string };
-      register: { position: {} };
+      register: { position: object };
       profile_user: undefined;
       select_map_position: undefined;
     }

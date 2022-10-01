@@ -11,6 +11,7 @@ import {
 import {
   CircleWavyCheck,
   Clipboard,
+  Clock,
   Hourglass,
   ShieldWarning,
   Trash,
@@ -42,6 +43,8 @@ type RouteParams = {
 type ProblemDetails = ProblemProps & {
   description: string;
   solution: string;
+  latitude: number;
+  longitude: number;
   closed: string;
 };
 
@@ -55,13 +58,14 @@ export function Details() {
 
   function handleOpenGoogleMapRoutes() {
     Linking.openURL(
-      `http://www.google.com/maps/dir/?api=1&destination=-14.1015598,-46.6230923`
+      `http://www.google.com/maps/dir/?api=1&destination=${problem.latitude},${problem.longitude}`
     );
   }
 
   useEffect(() => {
     api.get(`/problem/${problemId}`).then((response) => {
-      setProblem(response.data.problem);
+      setProblem(response.data);
+      console.log(problem);
     });
   }, []);
 
@@ -132,6 +136,16 @@ export function Details() {
               : problem.solution
           }
           footer={problem.closed && `Encerrado em ${problem.closed}`}
+        />
+
+        <CardDetails
+          title="Entidade Responsável"
+          icon={Clock}
+          description={
+            problem.status === "open"
+              ? "Aguardando entidade para solução"
+              : problem.solution
+          }
         />
         <VStack bg="gray.600" mt={5} rounded="sm">
           <MapView

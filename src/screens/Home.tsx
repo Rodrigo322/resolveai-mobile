@@ -11,7 +11,7 @@ import {
   VStack,
 } from "native-base";
 import { ChatCenteredText } from "phosphor-react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Logo from "../assets/logo_secondary.svg";
 import { Button } from "../components/Button";
@@ -19,10 +19,12 @@ import { Button } from "../components/Button";
 import { Filter } from "../components/Filter";
 import { Loading } from "../components/Loading";
 import { Problem, ProblemProps } from "../components/Problem";
+import { AuthContext } from "../contexts/auth";
 
 import { api } from "../services/api";
 
 export function Home() {
+  const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [statusSelected, setStatusSelected] = useState<"open" | "closed">(
     "open"
@@ -46,10 +48,13 @@ export function Home() {
 
   useEffect(() => {
     setLoading(true);
-    api.get<ProblemProps[]>(`/problems/${statusSelected}`).then((response) => {
-      setProblems(response.data);
-      setLoading(false);
-    });
+    console.log("home: ", user);
+    api
+      .get<ProblemProps[]>(`/problems/user/${user.id}/${statusSelected}`)
+      .then((response) => {
+        setProblems(response.data);
+        setLoading(false);
+      });
   }, [statusSelected]);
 
   return (
@@ -83,7 +88,7 @@ export function Home() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Heading color="gray.100">Minhas Solicitações</Heading>
+          <Heading color="gray.100">Minhas Solicitações </Heading>
           <Text color="gray.200">{problems.length}</Text>
         </HStack>
         <HStack space={3} mb={8}>
