@@ -20,6 +20,7 @@
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
     "native-base": "^3.4.17",
+    "object-to-formdata": "^4.4.2",
     "phosphor-react-native": "^1.1.2",
     "react": "18.0.0",
     "react-dom": "18.0.0",

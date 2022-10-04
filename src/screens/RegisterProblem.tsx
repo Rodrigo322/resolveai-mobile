@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { useTheme, VStack } from "native-base";
@@ -33,8 +33,6 @@ export function RegisterProblem() {
 
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
-  const route = useRoute();
-  const { latitude, longitude } = route.params as RouteParamsLocation;
 
   useEffect(() => {
     const loadingStoreData = async () => {
@@ -73,31 +71,39 @@ export function RegisterProblem() {
   async function handleCreateNewProblem() {
     try {
       setIsLoading(true);
-
       const storageLatitude = await AsyncStorage.getItem("@storage:latitude");
       const storageLongitude = await AsyncStorage.getItem("@storage:longitude");
+      const storageToken = await AsyncStorage.getItem("@storage:token");
 
-      const data = new FormData();
+      console.log(storageToken);
 
-      data.append("title", title);
-      data.append("description", description);
-      data.append("latitude", storageLatitude);
-      data.append("longitude", storageLongitude);
-      data.append("status", "open");
+      const formData = new FormData();
 
-      photos.forEach((photo) => {
-        data.append("Image", {
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("latitude", storageLatitude);
+      formData.append("longitude", storageLongitude);
+      formData.append("status", "open");
+
+      photos.map((photo, index) => {
+        return formData.append("images", {
+          name: `image-${index}.jpeg`,
           uri: photo,
+          type: "image/jpeg",
         } as any);
       });
 
-      await api.post(`/problem/user/${user.id}`, data);
-
-      navigation.navigate("home");
-
-      console.log(data);
-
-      Alert.alert("Cadastro", "Solicitação feita com sucesso!");
+      await api
+        .post(`/problem/user/${user.id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => navigation.navigate("home"))
+        .catch((err) => {
+          console.log(err);
+          Alert.alert("Error", "Ops. Algo deu errado!");
+        });
       setIsLoading(false);
     } catch (error) {
       console.log(error);
