@@ -48,7 +48,6 @@ export function Home() {
 
   useEffect(() => {
     setLoading(true);
-    console.log("home: ", user);
     api
       .get<ProblemProps[]>(`/problems/user/${user.id}/${statusSelected}`)
       .then((response) => {
@@ -74,7 +73,7 @@ export function Home() {
             size={10}
             borderRadius={100}
             source={{
-              uri: "https://avatars.githubusercontent.com/u/59943388?v=4",
+              uri: "https://i.pinimg.com/736x/3e/aa/24/3eaa245d923949b6f662b8ba07b7a3b2.jpg",
             }}
             alt="Alternate Text"
           />

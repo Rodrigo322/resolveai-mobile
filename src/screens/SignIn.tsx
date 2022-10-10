@@ -23,11 +23,13 @@ export function SignIn() {
   }
 
   async function handleSignIn() {
+    setIsLoading(true);
     const data = {
       email,
       password,
     };
     await signIn(data);
+    setIsLoading(false);
   }
 
   return (

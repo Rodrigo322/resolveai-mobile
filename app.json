@@ -1,8 +1,15 @@
 {
+  "name": "resolveai",
+  "displayName": "resolveai",
   "expo": {
     "name": "resolveai",
     "slug": "resolveai",
     "version": "1.0.0",
+    "splash": {
+      "image": "./assets/Splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#121214"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -21,6 +28,14 @@
         "wasm",
         "svg"
       ]
+    },
+    "android": {
+      "package": "com.resolveai",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA0ajaA818COnHwcqNMM8DhyR_r_MBviFE"
+        }
+      }
     }
   }
 }

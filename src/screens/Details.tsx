@@ -46,19 +46,23 @@ type ProblemDetails = ProblemProps & {
   latitude: number;
   longitude: number;
   closed: string;
+  Image: Array<{
+    id: number;
+    path: string;
+  }>;
 };
 
 export function Details() {
   const { colors } = useTheme();
 
-  const [problem, setProblem] = useState<ProblemDetails>({} as ProblemDetails);
+  const [problem, setProblem] = useState<ProblemDetails>();
 
   const route = useRoute();
   const { problemId } = route.params as RouteParams;
 
   function handleOpenGoogleMapRoutes() {
     Linking.openURL(
-      `http://www.google.com/maps/dir/?api=1&destination=${problem.latitude},${problem.longitude}`
+      `http://www.google.com/maps/dir/?api=1&destination=${problem?.latitude},${problem?.longitude}`
     );
   }
 
@@ -97,24 +101,17 @@ export function Details() {
       </HStack>
       <ScrollView mx={5} showsVerticalScrollIndicator={false}>
         <ScrollView horizontal pagingEnabled>
-          <Image
-            style={styles.image}
-            source={{
-              uri: "https://img-vozdascomunidade.s3.sa-east-1.amazonaws.com/wp-content/uploads/2021/01/30173019/Complexo-Alemao-Rua-do-Rio-43-1-scaled.jpg",
-            }}
-          />
-          <Image
-            style={styles.image}
-            source={{
-              uri: "https://img-vozdascomunidade.s3.sa-east-1.amazonaws.com/wp-content/uploads/2021/01/30173019/Complexo-Alemao-Rua-do-Rio-43-1-scaled.jpg",
-            }}
-          />
-          <Image
-            style={styles.image}
-            source={{
-              uri: "https://img-vozdascomunidade.s3.sa-east-1.amazonaws.com/wp-content/uploads/2021/01/30173019/Complexo-Alemao-Rua-do-Rio-43-1-scaled.jpg",
-            }}
-          />
+          {problem.Image.map((image) => {
+            return (
+              <Image
+                key={image.id}
+                style={styles.image}
+                source={{
+                  uri: image.path,
+                }}
+              />
+            );
+          })}
         </ScrollView>
         <CardDetails
           title="título"

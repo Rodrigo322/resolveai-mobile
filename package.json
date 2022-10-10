@@ -19,6 +19,7 @@
     "expo-image-picker": "~13.3.1",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.14.6",
     "native-base": "^3.4.17",
     "object-to-formdata": "^4.4.2",
     "phosphor-react-native": "^1.1.2",
