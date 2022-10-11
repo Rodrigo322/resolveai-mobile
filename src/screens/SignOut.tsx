@@ -25,25 +25,34 @@ export function SignOut() {
     navigation.goBack();
   }
 
-  function handleSignOut() {
+  async function handleSignOut() {
     setIsLoading(true);
     const data = {
       name,
       email,
       password,
     };
-    api
-      .post("/user", data)
-      .then((response) => {
-        if (response.data.id) {
-          setIsLoading(false);
-          navigation.goBack();
-          return Alert.alert("Success", "Usuário criado com sucesso.");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (data.name === "" || data.email === "" || data.password === "") {
+      setIsLoading(false);
+      return Alert.alert(
+        "Alert",
+        "Por favor preencha todos os campos corretamente."
+      );
+    }
+
+    const response = await api.post("/user", {
+      name: data.name,
+      email: data.email.toLocaleLowerCase().trim(),
+      password: data.password.trim(),
+    });
+    console.log(response);
+
+    if (response.data.id) {
+      setIsLoading(false);
+      navigation.goBack();
+      return Alert.alert("Success", "Usuário criado com sucesso.");
+    }
   }
 
   return (
@@ -61,6 +70,8 @@ export function SignOut() {
         onChangeText={setName}
       />
       <Input
+        autoCapitalize="none"
+        textTransform="lowercase"
         placeholder="E-mail"
         mb={4}
         InputLeftElement={

@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { useTheme, VStack } from "native-base";
 import { Plus } from "phosphor-react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   Image,
@@ -18,12 +18,8 @@ import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { AuthContext } from "../contexts/auth";
-import { api } from "../services/api";
 
-type RouteParamsLocation = {
-  latitude: number;
-  longitude: number;
-};
+import { api } from "../services/api";
 
 export function RegisterProblem() {
   const [title, setTitle] = useState("");
@@ -33,16 +29,6 @@ export function RegisterProblem() {
 
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
-
-  useEffect(() => {
-    const loadingStoreData = async () => {
-      const storageLatitude = await AsyncStorage.getItem("@storage:latitude");
-      const storageLongitude = await AsyncStorage.getItem("@storage:longitude");
-
-      console.log(storageLatitude, storageLongitude);
-    };
-    loadingStoreData();
-  }, []);
 
   const { colors } = useTheme();
 
@@ -73,9 +59,6 @@ export function RegisterProblem() {
       setIsLoading(true);
       const storageLatitude = await AsyncStorage.getItem("@storage:latitude");
       const storageLongitude = await AsyncStorage.getItem("@storage:longitude");
-      const storageToken = await AsyncStorage.getItem("@storage:token");
-
-      console.log(storageToken);
 
       const formData = new FormData();
 
@@ -93,19 +76,21 @@ export function RegisterProblem() {
         } as any);
       });
 
-      await api
-        .post(`/problem/user/${user.id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => navigation.navigate("home"))
-        .catch((err) => {
-          console.log(err);
-          Alert.alert("Error", "Ops. Algo deu errado!");
-        });
+      const response = await api.post(`/problem/user/${user.id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.id) {
+        setIsLoading(false);
+        navigation.navigate("home");
+        Alert.alert("Sucess", "Resgistro feito com sucesso!");
+      }
+
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       Alert.alert("error", error);
     }

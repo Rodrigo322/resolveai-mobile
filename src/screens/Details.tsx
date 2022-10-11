@@ -34,6 +34,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { Loading } from "../components/Loading";
 import { api } from "../services/api";
 
 type RouteParams = {
@@ -69,9 +70,12 @@ export function Details() {
   useEffect(() => {
     api.get(`/problem/${problemId}`).then((response) => {
       setProblem(response.data);
-      console.log(problem);
     });
   }, []);
+
+  if (!problem) {
+    return <Loading />;
+  }
 
   return (
     <VStack flex={1} bg="gray.700">

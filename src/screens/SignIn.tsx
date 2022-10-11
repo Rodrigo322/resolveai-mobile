@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Heading, Icon, Text, useTheme, VStack } from "native-base";
 import { Envelope, Key } from "phosphor-react-native";
 import { useContext, useState } from "react";
+import { Alert } from "react-native";
 
 import Logo from "../assets/1.svg";
 
@@ -28,7 +29,17 @@ export function SignIn() {
       email,
       password,
     };
-    await signIn(data);
+    if (data.email === "" || data.password === "") {
+      setIsLoading(false);
+      return Alert.alert(
+        "Alert",
+        "Por favor preencha todos os campos corretamente."
+      );
+    }
+    await signIn({
+      email: data.email.toLocaleLowerCase().trim(),
+      password: data.password.trim(),
+    });
     setIsLoading(false);
   }
 
