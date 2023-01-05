@@ -29,7 +29,12 @@ Com o app ResolveAí pessoas podem ajudar a prefeitura local identificar problem
 <p align="center">
   <img alt="app mobile" title="ResolveAí" src="./assets/2.jpeg" width="200px">
   <img alt="app mobile" title="ResolveAí" src="./assets/1.jpeg" width="200px">
-  <img alt="app mobile" title="ResolveAí" src="./assets/3.jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/2 (1).jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/1 (1).jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/3 1.jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/3 (1).jpeg" width="200px">
+  <img alt="app mobile" title="ResolveAí" src="./assets/4.jpeg" width="200px">
+
 </p>
 ---
 
