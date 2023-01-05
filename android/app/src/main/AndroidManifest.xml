@@ -4,6 +4,9 @@
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="AIzaSyA0ajaA818COnHwcqNMM8DhyR_r_MBviFE"/>
   <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@my-expo-username/my-app"/>
   <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="45.0.0"/>
   <meta-data android:name="expo.modules.updates.AUTO_SETUP" android:value="false"/>

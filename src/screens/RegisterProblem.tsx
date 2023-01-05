@@ -11,7 +11,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import { Button } from "../components/Button";

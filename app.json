@@ -6,7 +6,7 @@
     "slug": "resolveai",
     "version": "1.0.0",
     "splash": {
-      "image": "./assets/Splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#121214"
     },
@@ -31,6 +31,7 @@
     },
     "android": {
       "package": "com.resolveai",
+      "versionCode": 1,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyA0ajaA818COnHwcqNMM8DhyR_r_MBviFE"

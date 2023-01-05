@@ -10,18 +10,11 @@ import mapMarker from "../assets/map.png";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 
-type PositionType = {
-  latitude: number;
-  longitude: number;
-};
-
 export function SelectMapPosition() {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const { colors } = useTheme();
 
   const navigation = useNavigation();
-
-  console.log(position);
 
   function handleNextStep() {
     navigation.navigate("register", { position });
@@ -30,6 +23,8 @@ export function SelectMapPosition() {
   async function handleSelectMapPosition(event: MapEvent) {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setPosition({ latitude, longitude });
+
+    console.log({ latitude, longitude });
 
     const latitudeConvertToString = JSON.stringify(latitude);
     const longitudeConvertToString = JSON.stringify(longitude);

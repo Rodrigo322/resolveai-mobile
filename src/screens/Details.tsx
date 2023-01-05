@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Box,
   HStack,
@@ -6,7 +6,7 @@ import {
   ScrollView,
   Text,
   useTheme,
-  VStack,
+  VStack
 } from "native-base";
 import {
   CircleWavyCheck,
@@ -14,7 +14,7 @@ import {
   Clock,
   Hourglass,
   ShieldWarning,
-  Trash,
+  Trash
 } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
@@ -28,11 +28,12 @@ import { ProblemProps } from "../components/Problem";
 import mapMarker from "../assets/map.png";
 
 import {
+  Alert,
   Dimensions,
   Image,
   Linking,
   StyleSheet,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import { Loading } from "../components/Loading";
 import { api } from "../services/api";
@@ -54,6 +55,7 @@ type ProblemDetails = ProblemProps & {
 };
 
 export function Details() {
+  const [isLoading, setIsLoading] = useState(false);
   const { colors } = useTheme();
 
   const [problem, setProblem] = useState<ProblemDetails>();
@@ -61,10 +63,26 @@ export function Details() {
   const route = useRoute();
   const { problemId } = route.params as RouteParams;
 
+  const navigation = useNavigation();
+
   function handleOpenGoogleMapRoutes() {
     Linking.openURL(
       `http://www.google.com/maps/dir/?api=1&destination=${problem?.latitude},${problem?.longitude}`
     );
+  }
+
+  async function handleRemoveProblem() {
+    try {
+      setIsLoading(true);
+      await api.delete(`/problem/${problemId}`);
+      navigation.goBack();
+      setIsLoading(false);
+      return Alert.alert("Sucess", "Solicitação removida com sucesso!.");
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+      return Alert.alert("Erro", "Ops. Algo deu errado.");
+    }
   }
 
   useEffect(() => {
@@ -73,122 +91,126 @@ export function Details() {
     });
   }, []);
 
-  if (!problem) {
-    return <Loading />;
-  }
-
   return (
     <VStack flex={1} bg="gray.700">
       <Box bg="gray.600" px={6}>
         <Header title="Solicitação" />
       </Box>
 
-      <HStack bg="gray.500" justifyContent="center" p={4}>
-        {problem.status === "closed" ? (
-          <CircleWavyCheck size={22} color={colors.green[300]} />
-        ) : (
-          <Hourglass size={22} color={colors.secondary[700]} />
-        )}
+      {problem ? (
+        <>
+          <HStack bg="gray.500" justifyContent="center" p={4}>
+            {problem.status === "closed" ? (
+              <CircleWavyCheck size={22} color={colors.green[300]} />
+            ) : (
+              <Hourglass size={22} color={colors.secondary[700]} />
+            )}
 
-        <Text
-          fontSize="sm"
-          color={
-            problem.status === "closed"
-              ? colors.green[300]
-              : colors.secondary[700]
-          }
-          ml={2}
-          textTransform="uppercase"
-        >
-          {problem.status === "closed" ? "finalizado" : "em andamento"}
-        </Text>
-      </HStack>
-      <ScrollView mx={5} showsVerticalScrollIndicator={false}>
-        <ScrollView horizontal pagingEnabled>
-          {problem.Image.map((image) => {
-            return (
-              <Image
-                key={image.id}
-                style={styles.image}
-                source={{
-                  uri: image.path,
-                }}
-              />
-            );
-          })}
-        </ScrollView>
-        <CardDetails
-          title="título"
-          description={problem.title}
-          icon={ShieldWarning}
-          footer={"12/05/22"}
-        />
-        <CardDetails
-          title="descrição do problema"
-          description={problem.description}
-          icon={Clipboard}
-        />
-        <CardDetails
-          title="solução"
-          icon={CircleWavyCheck}
-          description={
-            problem.status === "open"
-              ? "Problema ainda não solucionado"
-              : problem.solution
-          }
-          footer={problem.closed && `Encerrado em ${problem.closed}`}
-        />
-
-        <CardDetails
-          title="Entidade Responsável"
-          icon={Clock}
-          description={
-            problem.status === "open"
-              ? "Aguardando entidade para solução"
-              : problem.solution
-          }
-        />
-        <VStack bg="gray.600" mt={5} rounded="sm">
-          <MapView
-            initialRegion={{
-              latitude: -27.2092052,
-              longitude: -49.6401092,
-              latitudeDelta: 0.008,
-              longitudeDelta: 0.008,
-            }}
-            zoomEnabled={false}
-            pitchEnabled={false}
-            scrollEnabled={false}
-            rotateEnabled={false}
-            style={styles.mapStyle}
-          >
-            <Marker
-              icon={mapMarker}
-              coordinate={{
-                latitude: -27.2092052,
-                longitude: -49.6401092,
-              }}
-            />
-          </MapView>
-          <TouchableOpacity
-            onPress={handleOpenGoogleMapRoutes}
-            style={styles.routerContainer}
-          >
-            <Text fontSize="md" color={colors.secondary[700]}>
-              Ver rotas no Google Maps
+            <Text
+              fontSize="sm"
+              color={
+                problem.status === "closed"
+                  ? colors.green[300]
+                  : colors.secondary[700]
+              }
+              ml={2}
+              textTransform="uppercase"
+            >
+              {problem.status === "closed" ? "finalizado" : "em andamento"}
             </Text>
-          </TouchableOpacity>
-        </VStack>
-        <Button
-          bg="secondary.700"
-          _pressed={{
-            bg: "secondary.600",
-          }}
-          title="Remover solitação"
-          m={5}
-          leftIcon={<Icon as={<Trash color={colors.gray[100]} />} />}
-        />
-      </ScrollView>
+          </HStack>
+          <ScrollView mx={5} showsVerticalScrollIndicator={false}>
+            <ScrollView horizontal pagingEnabled>
+              {problem.Image.map((image) => {
+                return (
+                  <Image
+                    key={image.id}
+                    style={styles.image}
+                    source={{
+                      uri: image.path,
+                    }}
+                  />
+                );
+              })}
+            </ScrollView>
+            <CardDetails
+              title="título"
+              description={problem.title}
+              icon={ShieldWarning}
+              footer={"12/05/22"}
+            />
+            <CardDetails
+              title="descrição do problema"
+              description={problem.description}
+              icon={Clipboard}
+            />
+            <CardDetails
+              title="solução"
+              icon={CircleWavyCheck}
+              description={
+                problem.status === "open"
+                  ? "Problema ainda não solucionado"
+                  : problem.solution
+              }
+              footer={problem.closed && `Encerrado em ${problem.closed}`}
+            />
+
+            <CardDetails
+              title="Entidade Responsável"
+              icon={Clock}
+              description={
+                problem.status === "open"
+                  ? "Aguardando entidade para solução"
+                  : problem.solution
+              }
+            />
+            <VStack bg="gray.600" mt={5} rounded="sm">
+              <MapView
+                initialRegion={{
+                  latitude: -27.2092052,
+                  longitude: -49.6401092,
+                  latitudeDelta: 0.008,
+                  longitudeDelta: 0.008,
+                }}
+                zoomEnabled={false}
+                pitchEnabled={false}
+                scrollEnabled={false}
+                rotateEnabled={false}
+                style={styles.mapStyle}
+              >
+                <Marker
+                  icon={mapMarker}
+                  coordinate={{
+                    latitude: -27.2092052,
+                    longitude: -49.6401092,
+                  }}
+                />
+              </MapView>
+              <TouchableOpacity
+                onPress={handleOpenGoogleMapRoutes}
+                style={styles.routerContainer}
+              >
+                <Text fontSize="md" color={colors.secondary[700]}>
+                  Ver rotas no Google Maps
+                </Text>
+              </TouchableOpacity>
+            </VStack>
+            <Button
+              onPress={handleRemoveProblem}
+              isLoading={isLoading}
+              bg="secondary.700"
+              _pressed={{
+                bg: "secondary.600",
+              }}
+              title="Remover solitação"
+              m={5}
+              leftIcon={<Icon as={<Trash color={colors.gray[100]} />} />}
+            />
+          </ScrollView>
+        </>
+      ) : (
+        <Loading />
+      )}
     </VStack>
   );
 }
