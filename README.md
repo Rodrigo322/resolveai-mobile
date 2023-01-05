@@ -19,8 +19,10 @@ Com o app ResolveAí pessoas podem ajudar a prefeitura local identificar problem
 ## ⚙️ Funcionalidades
 
 - [ ] O usuário pode se cadastrar com seus dados
-- [ ] O usuário pode fazer solitações para resoluções de problemas
+- [ ] O usuário pode cadastrar solitações para resoluções de problemas
 - [ ] O usuário pode visualizar a todas as solitações cadastradas
+- [ ] O usuário pode visualizar detalhes de uma solicitação especifica
+- [ ] O usuário pode remover uma solicitação especifica
 
 ---
 
